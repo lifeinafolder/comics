@@ -90,6 +90,6 @@ function loadMasonry(){
 
 function doMasonry(){
   $('#box').masonry({
-    columnWidth: 20
+    columnWidth: 10
   });
 }
