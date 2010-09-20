@@ -7,7 +7,7 @@ function capitalize(str){
   return tokens.join(' ');
 }
 
-function loadMasonry(){
+function loadImages(){
   var e  = new ebay({
     appId: 'eBayb653a-8240-4cf1-9b3c-715b5b09f55',
     callback: function(response){
@@ -93,3 +93,7 @@ function doMasonry(){
     columnWidth: 10
   });
 }
+
+$(document).ready(function(){
+  loadImages();
+});
