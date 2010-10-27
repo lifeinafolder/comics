@@ -81,10 +81,6 @@ function loadImages(){
 
             wrapper.style.opacity = 0;
             fragment.appendChild(wrapper);
-            $(wrapper).animate({
-              opacity:1
-            },1000);
-
             if(fetching){
               fetching = false;
               loadingDiv.hide();
@@ -105,6 +101,9 @@ function loadImages(){
           console.info('Items Injected: ', fragment.childNodes.length);
           itemsInjected += fragment.childNodes.length;
           container.append(fragment);
+          $(container).children().animate({
+            opacity:1
+          },1000);
         }
       },500);
       //setTimeout(doMasonry,100);
