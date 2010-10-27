@@ -79,13 +79,14 @@ function loadImages(){
       //single injection in the DOM causing less reflow
       var itemsInjected = 0;
       var timer = setInterval(function(){
+        console.log(itemsInjected,len);
         if( itemsInjected === len ){
           clearInterval(timer);
           return;
         }
         else{
-          console.info('Items Injected: ', fragment.childNodes.length);
-          itemsInjected += fragment.childNodes.length;
+          console.info('Items in DOM: ', fragment.childNodes.length);
+          itemsInjected += (fragment.childNodes.length - itemsInjected);
           
           container.append(fragment);
           //animate being called only on the new elements
