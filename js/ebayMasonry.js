@@ -40,6 +40,7 @@ function loadImages(){
       
       var fragment = document.createElement('DIV');
       fragment.id = 'page' +response.findItemsByKeywordsResponse["0"].paginationOutput['0'].pageNumber['0'];
+      
       items.forEach(function(val,ind){
         if ( val.galleryURL ){
           //var source = val.galleryPlusPictureURL['0'] || val.galleryURL["0"];
@@ -64,28 +65,12 @@ function loadImages(){
             $(wrapper).addClass('box');
             wrapper.style.backgroundImage = 'url(' + source + ')';
 
-            /*
-            $(wrapper).mouseenter( function(){
-              var self = this;
-              $(self).addClass('highlight');
-              $(info).show();
-            });
-
-            $(wrapper).mouseleave( function(){
-              $(this).removeClass('highlight');
-              $(info).hide();
-            });
-*/
-            $(wrapper).click(function(){
-              window.location.href = link;
-            });
-
-            wrapper.style.opacity = 0;
-            fragment.appendChild(wrapper);
-            if(fetching){
-              fetching = false;
-              loadingDiv.hide();
-            }
+            var atag = $('<a/>');
+            atag.attr('href',link);
+            atag.append(wrapper);
+            
+            atag.css('opacity',0);
+            $(fragment).append(atag);
           };
           img.src = source;
         }
@@ -107,6 +92,11 @@ function loadImages(){
           $(fragment).children().animate({
             opacity:1
           },1000);
+          
+          if(fetching){
+            fetching = false;
+            loadingDiv.hide();
+          }
         }
       },500);
       //setTimeout(doMasonry,100);
