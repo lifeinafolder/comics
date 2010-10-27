@@ -15,13 +15,28 @@ var comicBooksBrowser = (function(){
   //mason that biatch, please
   function doMasonry(selector){
     $('' + selector).masonry({
-      columnWidth: 10,
+      columnWidth: 10
     });
   }
   
-  var e  = new ebay({
-    appId: 'eBayb653a-8240-4cf1-9b3c-715b5b09f55',
-    callback: function(response){
+  var responseHandler = function(data){
+    //attach the infinite scroll handler the first time this fn is called i.e. callback is received.
+    $(document).scroll(function(){
+      var pageHeight = $(document).height();
+      var viewportHeight = $(window).height();
+      var scrollHeight = $(document).scrollTop();
+
+      if ( !fetching && (pageHeight - viewportHeight - scrollHeight < 100) ){
+        e.searchByKeywords(query,{
+          'paginationInput.pageNumber' : (pageNo+1)
+        });
+        fetching = true;
+        loadingDiv.show();
+      }
+    });
+    
+    //rewrite fn
+    var fn = function(response){
       var items = response.findItemsByKeywordsResponse["0"].searchResult["0"].item;
       var len = items.length;
       console.info('Items Fetched: ', len);
@@ -116,21 +131,15 @@ var comicBooksBrowser = (function(){
       setTimeout(function(){
         clearInterval(timer);
       },5000);
-    }
-  });
-
-  $(document).scroll(function(){
-    var pageHeight = $(document).height();
-    var viewportHeight = $(window).height();
-    var scrollHeight = $(document).scrollTop();
-
-    if ( !fetching && (pageHeight - viewportHeight - scrollHeight < 100) ){
-      e.searchByKeywords(query,{
-        'paginationInput.pageNumber' : (pageNo+1)
-      });
-      fetching = true;
-      loadingDiv.show();
-    }
+    };
+    
+    fn(data);
+    responseHandler = fn;
+  }
+  
+  var e  = new ebay({
+    appId: 'eBayb653a-8240-4cf1-9b3c-715b5b09f55',
+    callback: responseHandler
   });
 
   return {
