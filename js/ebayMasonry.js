@@ -34,7 +34,7 @@ function loadImages(){
         if( mouseoutFrom.hasClass('info') && mouseoutTo !== mouseoutFrom.parent() ){
           var highlightedElem = $(this).find('.highlight');
           highlightedElem.removeClass('highlight');
-          mouseoutFrom.hide();
+          highlightedElem.find('.info').hide();
         }
       });
       
