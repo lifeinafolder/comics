@@ -129,10 +129,9 @@ function loadImages(){
 
 var loadingDiv = $('footer');
 
-function doMasonry(newcontent){
-  $('#box').masonry({
+function doMasonry(selector){
+  $('' + selector).masonry({
     columnWidth: 10,
-    appendedContent: newcontent
   });
 }
 
