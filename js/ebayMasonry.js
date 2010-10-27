@@ -85,7 +85,7 @@ function loadImages(){
           return;
         }
         else{
-          console.info('Items in DOM: ', fragment.childNodes.length);
+          //console.info('Items in DOM: ', fragment.childNodes.length);
           itemsInjected += (fragment.childNodes.length - itemsInjected);
           
           container.append(fragment);
@@ -101,6 +101,11 @@ function loadImages(){
         }
       },500);
       //setTimeout(doMasonry,100);
+      
+      // taking too long to fetch and insert images. time it out for poor browsers.
+      setTimeout(function(){
+        clearInterval(timer);
+      },5000);
     }
   });
 
