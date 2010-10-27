@@ -1,13 +1,24 @@
-function capitalize(str){
-  var tokens = str.split(' ');
-  tokens.forEach( function(token,ind){
-    token = token.toLowerCase();
-    tokens[ind] = token.substr(0,1).toUpperCase() + token.substr(1);
-  });
-  return tokens.join(' ');
-}
-
-function loadImages(){
+var comicBooksBrowser = (function(){
+  var loadingDiv = $('footer');
+  var query,pageNo = 1, fetching = false;
+  
+  //helper fn to sanitize some reealllly messed up text
+  function capitalize(str){
+    var tokens = str.split(' ');
+    tokens.forEach( function(token,ind){
+      token = token.toLowerCase();
+      tokens[ind] = token.substr(0,1).toUpperCase() + token.substr(1);
+    });
+    return tokens.join(' ');
+  }
+  
+  //mason that biatch, please
+  function doMasonry(selector){
+    $('' + selector).masonry({
+      columnWidth: 10,
+    });
+  }
+  
   var e  = new ebay({
     appId: 'eBayb653a-8240-4cf1-9b3c-715b5b09f55',
     callback: function(response){
@@ -108,14 +119,13 @@ function loadImages(){
     }
   });
 
-  var pageNo = 1, fetching = false;
   $(document).scroll(function(){
     var pageHeight = $(document).height();
     var viewportHeight = $(window).height();
     var scrollHeight = $(document).scrollTop();
 
     if ( !fetching && (pageHeight - viewportHeight - scrollHeight < 100) ){
-      e.searchByKeywords('comic books batman',{
+      e.searchByKeywords(query,{
         'paginationInput.pageNumber' : (pageNo+1)
       });
       fetching = true;
@@ -123,18 +133,15 @@ function loadImages(){
     }
   });
 
-  e.searchByKeywords('comic books batman');
-  fetching = true;
-}
-
-var loadingDiv = $('footer');
-
-function doMasonry(selector){
-  $('' + selector).masonry({
-    columnWidth: 10,
-  });
-}
+  return {
+    doQuery:function(keywords){
+      e.searchByKeywords(keywords);
+      fetching = true;
+      query = keywords;
+    }
+  };
+})();
 
 $(document).ready(function(){
-  loadImages();
+  comicBooksBrowser.doQuery('comic books batman');
 });
