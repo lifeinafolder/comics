@@ -38,7 +38,8 @@ function loadImages(){
         }
       });
       
-      var fragment = document.createDocumentFragment();
+      var fragment = document.createElement('DIV');
+      fragment.id = 'page' +response.findItemsByKeywordsResponse["0"].paginationOutput['0'].pageNumber['0'];
       items.forEach(function(val,ind){
         if ( val.galleryURL ){
           //var source = val.galleryPlusPictureURL['0'] || val.galleryURL["0"];
@@ -100,8 +101,10 @@ function loadImages(){
         else{
           console.info('Items Injected: ', fragment.childNodes.length);
           itemsInjected += fragment.childNodes.length;
+          
           container.append(fragment);
-          $(container).children().animate({
+          //animate being called only on the new elements
+          $(fragment).children().animate({
             opacity:1
           },1000);
         }
