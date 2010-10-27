@@ -15,6 +15,7 @@ function loadImages(){
       var len = items.length;
       console.info('Items Fetched: ', len);
       var container = $('#box');
+      /*
       container.mouseover(function(e){
         var target = $(e.target);
         //console.log('Mouseover: ', target.attr('class'));
@@ -37,7 +38,7 @@ function loadImages(){
           highlightedElem.find('.info').hide();
         }
       });
-      
+      */
       var fragment = document.createElement('DIV');
       fragment.id = 'page' +response.findItemsByKeywordsResponse["0"].paginationOutput['0'].pageNumber['0'];
       
@@ -49,28 +50,26 @@ function loadImages(){
           var link = val.viewItemURL[0];
           var img = new Image();
           img.onload = function(){
-            var wrapper = document.createElement('DIV');
-            $(wrapper).css({
+            var wrapper = $('<a/>');
+            wrapper.css({
               'width': img.width,
               'height': img.height
             });
-            var info = document.createElement('DIV');
-            $(info).css({
+            
+            wrapper.attr('href',link);
+            wrapper.addClass('box');
+            wrapper.css('opacity',0);
+            wrapper[0].style.backgroundImage = 'url(' + source + ')';
+            
+            var info = $('<DIV/>');
+            info.css({
               'height' : img.height - 10,
               'padding' : 5
             });
-            $(info).addClass('info');
-            info.innerHTML = capitalize(val.title[0]);
-            $(wrapper).append(info);
-            $(wrapper).addClass('box');
-            wrapper.style.backgroundImage = 'url(' + source + ')';
-
-            var atag = $('<a/>');
-            atag.attr('href',link);
-            atag.append(wrapper);
-            
-            atag.css('opacity',0);
-            $(fragment).append(atag);
+            info.addClass('info');
+            info.html(capitalize(val.title[0]));
+            $(wrapper).append(info);            
+            $(fragment).append(wrapper);
           };
           img.src = source;
         }
