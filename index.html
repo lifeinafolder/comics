@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="css/style.css?v=1">
   <link rel="stylesheet" media="handheld" href="css/handheld.css?v=1">
   <script src="js/modernizr-1.5.min.js"></script>
-  <style>
+  <style>   
     #box{
       width:90%;
       margin:0 auto;
@@ -45,6 +45,25 @@
       display:none;
       word-wrap:break-word;
     }
+    
+    footer{
+      position:fixed;
+      z-index:10000;
+      bottom:0px;
+      width:260px;
+      height:32px;
+      border-radius:10px;
+      background:black;
+      opacity:0.9;
+      padding:20px;
+      margin:0 auto;
+      color:white;
+    }
+    
+    footer img{
+      vertical-align:middle;
+      margin-right:20px;
+    }
   </style>
 </head>
 <!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
@@ -54,18 +73,16 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
 
   <div id="container">
-    <header>
-
-    </header>
+    <header></header>
     
     <div id="main">
-          <input type="button" onclick="doMasonry()" value="masonry"/>
+          <!--<input type="button" onclick="doMasonry()" value="masonry"/>-->
     </div>
     <div id="box">
     
     </div>
     <footer>
-
+      <img src="images/ajax-loader.gif"/>Loading...
     </footer>
   </div> <!-- end of #container -->
 
