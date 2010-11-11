@@ -13,63 +13,8 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="css/style.css?v=1">
   <link rel="stylesheet" media="handheld" href="css/handheld.css?v=1">
+  <link rel="stylesheet" href="css/default.css">
   <script src="js/modernizr-1.5.min.js"></script>
-  <style>   
-    #box{
-      width:90%;
-      margin:0 auto;
-    }
-    
-    .box{
-      margin:5px;
-      float:left;
-      background-repeat : no-repeat;
-      text-overflow: ellipsis;
-    }
-    
-    #container a{
-      display:block;
-      text-decoration:none;
-    }
-    
-    .highlight{
-      -moz-box-shadow : 0px 0px 10px #000000;
-      -webkit-box-shadow : 0px 0px 10px #000000;
-      -moz-transform: scale(1.4);
-      -webkit-transform: scale(1.4);
-      position:relative;
-      z-index:999;
-      cursor:pointer;
-      font-size:0.8em;
-    }
-       
-    .info{
-      background:black;
-      opacity:0.8;
-      color:white;
-      display:none;
-      word-wrap:break-word;
-    }
-    
-    footer{
-      position:fixed;
-      z-index:10000;
-      bottom:0px;
-      width:260px;
-      height:32px;
-      border-radius:10px;
-      background:black;
-      opacity:0.9;
-      padding:20px;
-      margin:0 auto;
-      color:white;
-    }
-    
-    footer img{
-      vertical-align:middle;
-      margin-right:20px;
-    }
-  </style>
 </head>
 <!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
 <!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
@@ -78,13 +23,16 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
 
   <div id="container">
-    <header></header>
-    
-    <div id="main">
-          <!--<input type="button" onclick="doMasonry()" value="masonry"/>-->
-    </div>
-    <div id="box">
-    
+	<div id="searchcontainer">
+		<form id="search">
+			<input type="text" id="query"/>
+			<input type="submit" value="Search"/>
+			<!-- <input type="button" value="Feeling Lucky, eh?" id="lucky"/> -->
+   		</form>
+		<div class="arrowup"></div>
+	</div>
+    <div id="box" class="clearfix">
+
     </div>
     <footer>
       <img src="images/ajax-loader.gif"/>Loading...
@@ -93,8 +41,6 @@
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script>!window.jQuery && document.write('<script src="js/jquery-1.4.2.min.js"><\/script>')</script>
-  <script src="js/plugins.js?v=1"></script>
-  <script src="js/script.js?v=1"></script>
   <script src="js/jquery.masonry.min.js"></script>
   <script src="js/ebayapi.js"></script>
   <script src="js/ebayMasonry.js"></script>
