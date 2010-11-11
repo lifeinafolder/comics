@@ -1,7 +1,6 @@
 var comicBooksBrowser = (function(){
   var loadingDiv = $('footer');
-  var query,pageNo = 1, fetching = false;
-  
+	var query,container,pageNo = 1, fetching = false;
   //helper fn to sanitize some reealllly messed up text
   function capitalize(str){
     var tokens = str.split(' ');
@@ -22,25 +21,46 @@ var comicBooksBrowser = (function(){
   var responseHandler = function(data){
     //attach the infinite scroll handler the first time this fn is called i.e. callback is received.
     $(document).scroll(function(){
-      var pageHeight = $(document).height();
-      var viewportHeight = $(window).height();
-      var scrollHeight = $(document).scrollTop();
+			console.info('scroll triggered');
+			if(pageNo < 4){
+	      var pageHeight = $(document).height();
+	      var viewportHeight = $(window).height();
+	      var scrollHeight = $(document).scrollTop();
 
-      if ( !fetching && (pageHeight - viewportHeight - scrollHeight < 100) ){
-        e.searchByKeywords(query,{
-          'paginationInput.pageNumber' : (pageNo+1)
-        });
-        fetching = true;
-        loadingDiv.show();
-      }
+	      if ( !fetching && (pageHeight - viewportHeight - scrollHeight < 100) ){
+	        e.searchByKeywords(query,{
+	          'paginationInput.pageNumber' : pageNo
+	        });
+	        fetching = true;
+	        loadingDiv.show();
+	      }
+			}
+			else{
+				if( !document.getElementById('next') ){
+					console.log('capping infinite scroll. Adding next button from now onwards');
+					var btn = $('<INPUT type="button"/>');
+					btn.attr('value','Next');
+					btn.attr('id','next');
+					//btn.attr('type','button');
+					btn.click(function(){
+						pageNo +=1;
+						e.searchByKeywords(query,{
+		          'paginationInput.pageNumber' : pageNo
+		        });
+						fetching = true;
+						loadingDiv.show();
+					});
+					container.append(btn);
+				}
+			}
     });
     
     //rewrite fn
     var fn = function(response){
       var items = response.findItemsByKeywordsResponse["0"].searchResult["0"].item;
       var len = items.length;
-      console.info('Items Fetched: ', len);
-      var container = $('#box');
+			pageNo +=1;	//now that the response is back, increment the page no.
+      //console.info('Items Fetched: ', len);
       /*
       container.mouseover(function(e){
         var target = $(e.target);
@@ -66,7 +86,8 @@ var comicBooksBrowser = (function(){
       });
       */
       var fragment = document.createElement('DIV');
-      fragment.id = 'page' +response.findItemsByKeywordsResponse["0"].paginationOutput['0'].pageNumber['0'];
+			console.info(response.findItemsByKeywordsResponse["0"].paginationOutput['0'].pageNumber['0']);
+      fragment.id = 'page' + response.findItemsByKeywordsResponse["0"].paginationOutput['0'].pageNumber['0'];
       
       items.forEach(function(val,ind){
         if ( val.galleryURL ){
@@ -104,7 +125,7 @@ var comicBooksBrowser = (function(){
       //single injection in the DOM causing less reflow
       var itemsInjected = 0;
       var timer = setInterval(function(){
-        console.log(itemsInjected,len);
+        //console.log(itemsInjected,len);
         if( itemsInjected === len ){
           clearInterval(timer);
           return;
@@ -112,8 +133,7 @@ var comicBooksBrowser = (function(){
         else{
           //console.info('Items in DOM: ', fragment.childNodes.length);
           itemsInjected += (fragment.childNodes.length - itemsInjected);
-          
-          container.append(fragment);
+					container.append(fragment);
           //animate being called only on the new elements
           $(fragment).children().animate({
             opacity:1
@@ -143,6 +163,9 @@ var comicBooksBrowser = (function(){
   });
 
   return {
+		init:function(){
+			container = $('#box');
+		},
     doQuery:function(keywords){
       e.searchByKeywords(keywords);
       fetching = true;
@@ -152,5 +175,14 @@ var comicBooksBrowser = (function(){
 })();
 
 $(document).ready(function(){
-  comicBooksBrowser.doQuery('comic books batman');
+	$('#search').submit(function(){
+		$('#searchcontainer').animate({
+			marginTop: '50',
+		});
+		comicBooksBrowser.init();
+		comicBooksBrowser.doQuery($('#query').val());
+		$('.arrowup').show();
+		$('#box').show();
+		return false;
+	});
 });
